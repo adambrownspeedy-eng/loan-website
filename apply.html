@@ -131,7 +131,7 @@
                 </a>
             </div>
 
-            <form id="loan-application-form">
+            <form id="loan-application-form" action="/.netlify/functions/send-email" method="POST">
                 <!-- Removed FormSubmit.co action, handled via JS -->
 
                 <!-- Personal Information -->
@@ -305,5 +305,6 @@
         });
     </script>
 </body>
+
 
 </html>
