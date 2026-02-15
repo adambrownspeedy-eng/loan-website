@@ -786,3 +786,18 @@ p {
         grid-template-columns: 1fr;
     }
 }
+
+/* Fix Responsiveness for grids (defined after original media queries) */
+@media (max-width: 900px) {
+
+    .features-grid,
+    .options-grid,
+    .calculator-wrapper {
+        grid-template-columns: 1fr !important;
+    }
+
+    .feature-card,
+    .option-item {
+        margin-bottom: 1rem;
+    }
+}
